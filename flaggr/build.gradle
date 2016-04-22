@@ -68,7 +68,7 @@ dependencies {
 ext {
     bintrayRepo = 'maven'
     bintrayName = 'flaggr'
-    orgName = 'BlaBlaCar'
+    orgName = 'nazim'
 
     publishedGroupId = 'com.comuto'
     libraryName = 'Flaggr'
@@ -79,7 +79,7 @@ ext {
     siteUrl = 'https://github.com/blablacar/flaggr-android'
     gitUrl = 'https://github.com/blablacar/flaggr-android.git'
 
-    libraryVersion = 0.1
+    libraryVersion = 0.2
 
     developerId = 'BlaBlaCar'
     developerName = 'BlaBlaCar'
