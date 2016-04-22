@@ -5,7 +5,7 @@ A library that allows you to enable/disable features and/or part of code regardi
 ## How to include it
 
 ```groovy
-compile 'com.comuto:flaggr:0.1'
+compile 'com.comuto:flaggr:0.2'
 ```
 
 ## How to use it 
@@ -14,27 +14,23 @@ Initialize at the start of the application :
 
 ```java
 // on onCreate of Application :
-Flaggr flaggr = Flaggr.with(this);
-flaggr.loadConfig(BuildConfig.FEATURE_FLAG_URL);
+Flaggr.with(this).loadConfig(FLAGGR_CONFIG_URI);
 ```
+
+The "FLAGGR_CONFIG_URI" is the uri where your flaggs are stored (json file for example)
 
 To reload the feature flags file, the current best solution is to add this code in the onResume method of your MainActivity
 ```java
-((MyApplication) getApplication()).getFlaggr().reloadConfig();
+Flaggr.with(this).reloadConfig();
 ```
 
 Checking if a flag is active :
 
 1 - get Flaggr instance :
 
-  * In an activity : 
+  * In an activity & Fragment :
 ```java
-((MyApplication) getApplication()).getFlaggr();
-```
-  
-  * In a Fragment : 
-```java
-((MyApplication) getActivity().getApplication()).getFlaggr();
+Flaggr.with(this);
 ```
 
 2 - Construct the flag context and pass it to isActive (There is a default value of each setter, you can override only the needed setters) : 
@@ -42,7 +38,7 @@ Checking if a flag is active :
 MyFlagContext.FlagContextBuilder builder = new MyFlagContext.FlagContextBuilder()
         .setLocale(Locale.getDefault())
         .setUserId(myUserId);
-flaggr.isActive(getString(R.string.my_flag), builder.build());
+Flaggr.with(this).isActive(getString(R.string.my_flag), builder.build());
 ```
 Your context can contain any type of data, but IT MUST IMPLEMENTS THE INTERFACE FlagContextInterface
 

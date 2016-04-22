@@ -20,9 +20,9 @@ public class Flag {
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
-            ALWAYS_ACTIVE, // The Toggle is always activated
+        ALWAYS_ACTIVE, // The Toggle is always activated
         CONDITIONALLY_ACTIVE, // The toggle is activated with many conditions
-            INACTIVE // The toggle is always deactivated
+        INACTIVE // The toggle is always deactivated
     })
     public @interface ToggleStatus {}
     public static final String CONDITIONALLY_ACTIVE = "conditionally-active";
@@ -31,9 +31,9 @@ public class Flag {
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
-            UNANIMOUS,
-            AFFIRMATIVE,
-            MAJORITY
+        UNANIMOUS,
+        AFFIRMATIVE,
+        MAJORITY
     })
     public @interface ToggleStrategy {}
     public static final String UNANIMOUS = "unanimous";
