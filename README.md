@@ -5,7 +5,7 @@ A library that allows you to enable/disable features and/or part of code regardi
 ## How to include it
 
 ```groovy
-compile 'com.comuto:flaggr:0.3'
+compile 'com.comuto:flaggr:0.3.1 '
 ```
 
 ## How to use it 
