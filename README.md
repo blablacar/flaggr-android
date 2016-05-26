@@ -5,7 +5,7 @@ A library that allows you to enable/disable features and/or part of code regardi
 ## How to include it
 
 ```groovy
-compile 'com.comuto:flaggr:0.2'
+compile 'com.comuto:flaggr:0.3'
 ```
 
 ## How to use it 
@@ -41,6 +41,11 @@ MyFlagContext.FlagContextBuilder builder = new MyFlagContext.FlagContextBuilder(
 Flaggr.with(this).isActive(getString(R.string.my_flag), builder.build());
 ```
 Your context can contain any type of data, but IT MUST IMPLEMENTS THE INTERFACE FlagContextInterface
+
+You can also specify a default value if the flag is not found or an error happens when processing
+```java
+Flaggr.with(this).isActive(getString(R.string.my_flag), builder.build(), true);
+```
 
 ## License
 ```

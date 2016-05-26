@@ -113,8 +113,20 @@ public final class Flaggr {
      * @return true if the flag is activated, false otherwise
      */
     public boolean isActive(String flagName, FlagContextInterface flagContext) {
+        return isActive(flagName, flagContext, false);
+    }
+
+    /**
+     * Method to call to check that a flag is activated
+     * @param flagName The flag name
+     * @param flagContext the context for checking the flag
+     * @param defaultValue The default value you want if the flag is not founded or an error happen when checking
+     * for the flag
+     * @return true if the flag is activated, false otherwise
+     */
+    public boolean isActive(String flagName, FlagContextInterface flagContext, boolean defaultValue) {
         if (TextUtils.isEmpty(flagName)) {
-            return false;
+            return defaultValue;
         }
         /** Check if the flag is in the cache list, return the result */
         if (flagCaches.containsKey(flagName))
@@ -124,15 +136,14 @@ public final class Flaggr {
         if (null != flags && null != flagContext) {
             for (Flag flag : flags) {
                 if (null != flag && null != flag.getName() && flag.getName().equals(flagName)) {
-                    boolean isActivated = FlaggrManager.isActivated(flag, flagContext);
+                    boolean isActivated = FlaggrManager.isActivated(flag, flagContext, defaultValue);
                     flagCaches.put(flagName, isActivated);
                     return isActivated;
                 }
             }
         }
-        //TODO : Add debug level
         Log.w(TAG, "The flag "+ flagName +" is not found.");
-        return false;
+        return defaultValue;
     }
 
     private String getPreferenceName(String flagName) {

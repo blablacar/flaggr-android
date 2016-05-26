@@ -14,7 +14,7 @@ public class FlaggrManager {
 
     private static Strategy strategy;
 
-    public static boolean isActivated(Flag flag, FlagContextInterface context) {
+    public static boolean isActivated(Flag flag, FlagContextInterface context, boolean defaultValue) {
         switch (flag.getStatus()) {
             case Flag.ALWAYS_ACTIVE:
                 return true;
@@ -23,7 +23,12 @@ public class FlaggrManager {
             case Flag.CONDITIONALLY_ACTIVE:
                 return checkConditions(flag, context);
         }
-        return false;
+        return defaultValue;
+    }
+
+
+    public static boolean isActivated(Flag flag, FlagContextInterface context) {
+       return isActivated(flag, context, false);
     }
 
     /**
