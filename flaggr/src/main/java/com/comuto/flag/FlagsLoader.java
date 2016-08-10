@@ -3,19 +3,15 @@ package com.comuto.flag;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
-
 import com.comuto.flag.model.Flag;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-
+import dagger.Lazy;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.net.HttpURLConnection;
 import java.util.List;
-
 import javax.inject.Inject;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -29,12 +25,12 @@ public final class FlagsLoader {
 
     private static final String TAG = "FlagsLoader";
 
-    private OkHttpClient client;
+    private Lazy<OkHttpClient> lazyClient;
     private Gson gson;
 
     @Inject
-    public FlagsLoader(OkHttpClient client, Gson gson) {
-        this.client = client;
+    public FlagsLoader(Lazy<OkHttpClient> lazyClient, Gson gson) {
+        this.lazyClient = lazyClient;
         this.gson = gson;
     }
 
@@ -47,7 +43,7 @@ public final class FlagsLoader {
                 .url(url)
                 .build();
 
-        client.newCall(request).enqueue(new Callback() {
+        lazyClient.get().newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.e(TAG, "onFailure() called with: e = [" + e + "]");

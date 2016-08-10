@@ -1,1 +1,1 @@
-include ':flaggr'
+include ':flaggr', ':sample'
