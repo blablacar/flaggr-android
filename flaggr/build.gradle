@@ -20,8 +20,8 @@ android {
     defaultConfig {
         minSdkVersion project.minSdkVersion
         targetSdkVersion project.TARGET_SDK
-        versionCode 2
-        versionName "0.3.1 "
+        versionCode 3
+        versionName "0.3.2"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -79,7 +79,7 @@ ext {
     siteUrl = 'https://github.com/blablacar/flaggr-android'
     gitUrl = 'https://github.com/blablacar/flaggr-android.git'
 
-    libraryVersion = '0.3.1'
+    libraryVersion = '0.3.2'
 
     developerId = 'BlaBlaCar'
     developerName = 'BlaBlaCar'
