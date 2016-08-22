@@ -22,7 +22,7 @@ import javax.inject.Inject;
  *  Use {@link #with(Context)} for the global singleton instance.
  * </p>
  */
-public final class Flaggr {
+public class Flaggr {
 
     private static final String TAG = "Flaggr";
 
