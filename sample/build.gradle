@@ -1,0 +1,17 @@
+apply plugin: "com.android.application"
+
+android {
+    compileSdkVersion Integer.parseInt(COMPILE_SDK_VERSION)
+    buildToolsVersion BUILD_TOOLS_VERSION
+
+    defaultConfig {
+        applicationId "com.comuto.flag.sample"
+        minSdkVersion Integer.parseInt(MIN_SDK_VERSION)
+        targetSdkVersion Integer.parseInt(COMPILE_SDK_VERSION)
+    }
+}
+
+dependencies {
+    compile project(":flaggr")
+    compile "com.android.support:appcompat-v7:${SUPPORT_VERSION}"
+}

@@ -1,34 +1,18 @@
-buildscript {
-    repositories {
-        mavenCentral()
-        jcenter()
-    }
-
-    dependencies {
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-    }
-}
-
-apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: "com.android.library"
+apply plugin: "com.neenbedankt.android-apt"
 
 android {
-    compileSdkVersion project.COMPILE_SDK
-    buildToolsVersion project.BUILD_TOOL
+    compileSdkVersion Integer.parseInt(COMPILE_SDK_VERSION)
+    buildToolsVersion BUILD_TOOLS_VERSION
 
     defaultConfig {
-        minSdkVersion project.minSdkVersion
-        targetSdkVersion project.TARGET_SDK
-        versionCode 2
-        versionName "0.3.1 "
-
+        minSdkVersion Integer.parseInt(MIN_SDK_VERSION)
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
 
@@ -43,54 +27,16 @@ android {
     tasks.withType(Javadoc).all { enabled = false }
 }
 
-repositories {
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
-    mavenCentral()
-    jcenter()
-}
-
 dependencies {
-    provided 'com.squareup.okhttp3:okhttp:3.0.1'
-    provided 'com.squareup.okio:okio:1.6.0'
+    compile "com.squareup.okhttp3:okhttp:${OKHTTP_VERSION}"
+    compile "com.google.code.gson:gson:${GSON_VERSION}"
+    compile "com.android.support:support-annotations:${SUPPORT_VERSION}"
+    compile "com.google.dagger:dagger:${DAGGER_VERSION}"
+    compile "org.glassfish:javax.annotation:${GLASSFISH_ANNOTATION_VERSION}"
+    apt "com.google.dagger:dagger-compiler:${DAGGER_VERSION}"
 
-    compile 'com.google.code.gson:gson:2.5'
-    compile 'com.android.support:support-annotations:23.4.0'
-    compile 'com.google.dagger:dagger:2.4'
-    compile 'org.glassfish:javax.annotation:10.0-b28'
-    compile 'com.android.support.test:runner:0.5'
-    apt 'com.google.dagger:dagger-compiler:2.4'
-
-    testCompile 'junit:junit:4.12'
-    androidTestCompile "junit:junit:4.12"
-    androidTestCompile 'com.squareup.assertj:assertj-android:1.1.1'
+    testCompile "junit:junit:${JUNIT_VERSION}"
+    testCompile "com.android.support.test:runner:${SUPPORT_TEST_RUNNER_VERSION}"
 }
 
-ext {
-    bintrayRepo = 'maven'
-    bintrayName = 'flaggr'
-    orgName = 'nazim'
-
-    publishedGroupId = 'com.comuto'
-    libraryName = 'Flaggr'
-    artifact = 'flaggr'
-
-    libraryDescription = ''
-
-    siteUrl = 'https://github.com/blablacar/flaggr-android'
-    gitUrl = 'https://github.com/blablacar/flaggr-android.git'
-
-    libraryVersion = '0.3.1'
-
-    developerId = 'BlaBlaCar'
-    developerName = 'BlaBlaCar'
-    developerEmail = 'android-devs@blablacar.com'
-
-    licenseName = 'The Apache Software License, Version 2.0'
-    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-    allLicenses = ["Apache-2.0"]
-}
-
-if (project.rootProject.file('local.properties').exists()) {
-    apply from: rootProject.file('gradle/install-v1.gradle')
-    apply from: rootProject.file('gradle/bintray-android-v1.gradle')
-}
+apply from: "../gradle/publish.gradle"
