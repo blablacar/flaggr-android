@@ -1,1 +1,2 @@
 include ':flaggr', ':sample'
+rootProject.name = "flaggr-parent"
