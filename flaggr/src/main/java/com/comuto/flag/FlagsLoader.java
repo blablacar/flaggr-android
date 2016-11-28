@@ -48,6 +48,7 @@ public final class FlagsLoader {
             public void onFailure(Call call, IOException e) {
                 Log.e(TAG, "onFailure() called with: e = [" + e + "]");
                 e.printStackTrace();
+                flagsCallback.onError();
             }
 
             @Override
