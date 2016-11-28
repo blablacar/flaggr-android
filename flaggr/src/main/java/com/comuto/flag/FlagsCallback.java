@@ -14,4 +14,10 @@ public interface FlagsCallback {
      * @param flags List of parsed flags.
      */
     void onLoadFlags(String jsonResponse, List<Flag> flags);
+
+    /**
+     * Called if there is an error
+     * The file id not downloaded
+     */
+    void onError();
 }
