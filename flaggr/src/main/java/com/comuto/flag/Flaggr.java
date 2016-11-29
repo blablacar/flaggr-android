@@ -89,6 +89,7 @@ public class Flaggr {
     private void downloadConfig(String configUrl, final String defaultFlagsFileName) {
         flagCaches.clear();
         try {
+            loadLocalFlags(defaultFlagsFileName);
             flagsLoader.load(configUrl, new FlagsCallback() {
                 @Override
                 public void onLoadFlags(String jsonResponse, List<Flag> results) {
@@ -98,16 +99,20 @@ public class Flaggr {
 
                 @Override
                 public void onError() {
-                    String jsonResponse = readJSONFromAsset(defaultFlagsFileName);
-
-                    Type listType = new TypeToken<List<Flag>>() {}.getType();
-                    flags = gson.fromJson(jsonResponse, listType);
-                    preferences.edit().putString(FLAGS_PREF_KEY, jsonResponse).apply();
+                    loadLocalFlags(defaultFlagsFileName);
                 }
             });
         } catch (Exception ex) {
             Log.e(TAG, "Exception when loading config", ex);
         }
+    }
+
+    private void loadLocalFlags(final String defaultFlagsFileName) {
+        String jsonResponse = readJSONFromAsset(defaultFlagsFileName);
+
+        Type listType = new TypeToken<List<Flag>>() {}.getType();
+        flags = gson.fromJson(jsonResponse, listType);
+        preferences.edit().putString(FLAGS_PREF_KEY, jsonResponse).apply();
     }
 
     @Nullable
