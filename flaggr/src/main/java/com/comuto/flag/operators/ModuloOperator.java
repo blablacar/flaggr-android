@@ -2,6 +2,7 @@ package com.comuto.flag.operators;
 
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import com.comuto.flag.model.Flag;
 
 /**
  * An operator that check if
@@ -18,14 +19,14 @@ public class ModuloOperator extends Operator<String> {
     }
 
     @Override
-    public boolean appliesTo(@Nullable String value) throws NumberFormatException {
+    public Flag.FlagResultStatus appliesTo(@Nullable String value) throws NumberFormatException {
         if (TextUtils.isEmpty(value)) {
-            return false;
+            return Flag.FlagResultStatus.DISABLED;
         }
 
         final int val = Integer.parseInt(value);
         int asModule = val % module;
 
-        return asModule == rest;
+        return asModule == rest ? Flag.FlagResultStatus.ENABLED : Flag.FlagResultStatus.DISABLED;
     }
 }

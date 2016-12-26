@@ -2,6 +2,7 @@ package com.comuto.flag;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.VisibleForTesting;
@@ -29,7 +30,7 @@ public class Flaggr {
 
     private static final String TAG = "Flaggr";
 
-    protected static final String FLAGGR_SHARED_PREFERENCES_PREFIX = "FLAGGR_ID_";
+    protected static final String FLAGGR_SHARED_PREFERENCES_PREFIX = "FLAGGR_PREF_ID_";
     private static final String FLAGS_PREF_KEY = "FLAGS_KEYS";
 
     @VisibleForTesting static volatile Flaggr singleton;
@@ -39,7 +40,7 @@ public class Flaggr {
     @Inject Gson gson;
 
     private List<Flag> flags;
-    private final Map<String, Boolean> flagCaches = new HashMap<>(); /* Cache map */
+    private final Map<String, Flag.FlagResultStatus> flagCaches = new HashMap<>(); /* Cache map */
     private String configUrl;
     private String defaultFlagsFileName;
     private final Context context;
@@ -93,6 +94,8 @@ public class Flaggr {
             flagsLoader.load(configUrl, new FlagsCallback() {
                 @Override
                 public void onLoadFlags(String jsonResponse, List<Flag> results) {
+                    if (jsonResponse == null || jsonResponse.isEmpty() || results == null || results.isEmpty())
+                        return;
                     flags = results;
                     preferences.edit().putString(FLAGS_PREF_KEY, jsonResponse).apply();
                 }
@@ -139,7 +142,7 @@ public class Flaggr {
      * @param flagContext the context for checking the flag
      * @return true if the flag is activated, false otherwise
      */
-    public boolean isActive(@StringRes int resId, FlagContextInterface flagContext) {
+    public Flag.FlagResultStatus isActive(@StringRes int resId, FlagContextInterface flagContext) {
         return isActive(context.getString(resId), flagContext);
     }
 
@@ -150,7 +153,7 @@ public class Flaggr {
      * @param flagContext the context for checking the flag
      * @return true if the flag is activated, false otherwise
      */
-    public boolean isActive(String flagName, FlagContextInterface flagContext) {
+    public Flag.FlagResultStatus isActive(String flagName, FlagContextInterface flagContext) {
         return isActive(flagName, flagContext, false);
     }
 
@@ -163,9 +166,9 @@ public class Flaggr {
      * for the flag
      * @return true if the flag is activated, false otherwise
      */
-    public boolean isActive(String flagName, FlagContextInterface flagContext, boolean defaultValue) {
+    public Flag.FlagResultStatus isActive(@NonNull String flagName, FlagContextInterface flagContext, boolean defaultValue) {
         if (TextUtils.isEmpty(flagName)) {
-            return defaultValue;
+            return Flag.FlagResultStatus.UNKNOWN;
         }
         /** Check if the flag is in the cache list, return the result */
         if (flagCaches.containsKey(flagName)) return flagCaches.get(flagName);
@@ -174,14 +177,14 @@ public class Flaggr {
         if (null != flags && null != flagContext) {
             for (Flag flag : flags) {
                 if (null != flag && null != flag.getName() && flag.getName().equals(flagName)) {
-                    boolean isActivated = FlaggrManager.isActivated(flag, flagContext, defaultValue);
+                    Flag.FlagResultStatus isActivated = FlaggrManager.isActivated(flag, flagContext, defaultValue);
                     flagCaches.put(flagName, isActivated);
                     return isActivated;
                 }
             }
         }
         Log.w(TAG, "The flag " + flagName + " is not found.");
-        return defaultValue;
+        return Flag.FlagResultStatus.UNKNOWN;
     }
 
     private String getPreferenceName(String flagName) {

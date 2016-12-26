@@ -20,18 +20,18 @@ public class UnanimousStrategy implements Strategy {
      * @return true if a majority of condition are valid, false otherwise
      */
     @Override
-    public boolean isFlagActivated(Flag flag, @NonNull FlagContextInterface context) {
+    public Flag.FlagResultStatus isFlagActivated(Flag flag, @NonNull FlagContextInterface context) {
         List<Condition> conditionList = flag.getConditions();
         if (null != conditionList && conditionList.size() > 0) {
             for (Condition condition : conditionList) {
                 if (null != condition
                     && null != condition.getOperator()
-                    && !condition.getOperator().appliesTo(context.getValue(condition.getKey()))) {
-                    return false;
+                    && condition.getOperator().appliesTo(context.getValue(condition.getKey())) == Flag.FlagResultStatus.DISABLED) {
+                    return Flag.FlagResultStatus.DISABLED;
                 }
             }
         }
 
-        return true;
+        return Flag.FlagResultStatus.ENABLED;
     }
 }

@@ -16,5 +16,5 @@ public interface Strategy {
      * @param context The context used to do operation
      * @return true if the flag is activated, false otherwise
      */
-    boolean isFlagActivated(Flag flag, FlagContextInterface context);
+    Flag.FlagResultStatus isFlagActivated(Flag flag, FlagContextInterface context);
 }

@@ -1,5 +1,6 @@
 package com.comuto.flag.operators;
 
+import com.comuto.flag.model.Flag;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
@@ -17,8 +18,8 @@ public class InsetOperatorTest {
         values.add("4");
         values.add("5");
         InsetOperator<String> insetOperator = new InsetOperator<>("in-set", values);
-        assertEquals(true, insetOperator.appliesTo("2"));
-        assertEquals(false, insetOperator.appliesTo("6"));
+        assertEquals(Flag.FlagResultStatus.ENABLED, insetOperator.appliesTo("2"));
+        assertEquals(Flag.FlagResultStatus.DISABLED, insetOperator.appliesTo("6"));
     }
 
     @Test
@@ -30,22 +31,22 @@ public class InsetOperatorTest {
         values.add(4);
         values.add(5);
         InsetOperator<Integer> insetOperator = new InsetOperator<>("in-set", values);
-        assertEquals(true, insetOperator.appliesTo(2));
-        assertEquals(false, insetOperator.appliesTo(6));
+        assertEquals(Flag.FlagResultStatus.ENABLED, insetOperator.appliesTo(2));
+        assertEquals(Flag.FlagResultStatus.DISABLED, insetOperator.appliesTo(6));
     }
 
     @Test
     public void testEmptyInsetOperator() throws Exception {
         List<Integer> values = new ArrayList<>();
         InsetOperator<Integer> insetOperator = new InsetOperator<>("in-set", values);
-        assertEquals(false, insetOperator.appliesTo(2));
-        assertEquals(false, insetOperator.appliesTo(6));
+        assertEquals(Flag.FlagResultStatus.DISABLED, insetOperator.appliesTo(2));
+        assertEquals(Flag.FlagResultStatus.DISABLED, insetOperator.appliesTo(6));
     }
 
     @Test
     public void testWithNullListInsetOperator() throws Exception {
         InsetOperator<Integer> insetOperator = new InsetOperator<>("in-set", null);
-        assertEquals(false, insetOperator.appliesTo(2));
-        assertEquals(false, insetOperator.appliesTo(6));
+        assertEquals(Flag.FlagResultStatus.DISABLED, insetOperator.appliesTo(2));
+        assertEquals(Flag.FlagResultStatus.DISABLED, insetOperator.appliesTo(6));
     }
 }
