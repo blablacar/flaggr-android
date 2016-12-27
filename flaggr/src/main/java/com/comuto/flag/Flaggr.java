@@ -177,9 +177,9 @@ public class Flaggr {
         if (null != flags && null != flagContext) {
             for (Flag flag : flags) {
                 if (null != flag && null != flag.getName() && flag.getName().equals(flagName)) {
-                    Flag.FlagResultStatus isActivated = FlaggrManager.isActivated(flag, flagContext, defaultValue);
-                    flagCaches.put(flagName, isActivated);
-                    return isActivated;
+                    Flag.FlagResultStatus flagResultStatus = FlaggrManager.getFlagStatus(flag, flagContext, defaultValue);
+                    flagCaches.put(flagName, flagResultStatus);
+                    return flagResultStatus;
                 }
             }
         }

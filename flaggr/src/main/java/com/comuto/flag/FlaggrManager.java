@@ -14,7 +14,7 @@ public class FlaggrManager {
 
     private static Strategy strategy;
 
-    public static Flag.FlagResultStatus isActivated(Flag flag, FlagContextInterface context, boolean defaultValue) {
+    public static Flag.FlagResultStatus getFlagStatus(Flag flag, FlagContextInterface context, boolean defaultValue) {
         switch (flag.getStatus()) {
             case Flag.ALWAYS_ACTIVE:
                 return Flag.FlagResultStatus.ENABLED;
@@ -27,8 +27,8 @@ public class FlaggrManager {
     }
 
 
-    public static Flag.FlagResultStatus isActivated(Flag flag, FlagContextInterface context) {
-       return isActivated(flag, context, false);
+    public static Flag.FlagResultStatus getFlagStatus(Flag flag, FlagContextInterface context) {
+       return getFlagStatus(flag, context, false);
     }
 
     /**
@@ -48,7 +48,7 @@ public class FlaggrManager {
                 strategy = new AffirmativeStrategy();
                 break;
         }
-        return strategy.isFlagActivated(flag, context);
+        return strategy.getFlagStatus(flag, context);
     }
 
 }

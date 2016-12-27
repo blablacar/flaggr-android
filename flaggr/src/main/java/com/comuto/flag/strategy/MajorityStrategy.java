@@ -21,7 +21,7 @@ public class MajorityStrategy implements Strategy {
      * @return true if a majority of conditions are validated (> half), false otherwise
      */
     @Override
-    public Flag.FlagResultStatus isFlagActivated(Flag flag, @NonNull FlagContextInterface context) {
+    public Flag.FlagResultStatus getFlagStatus(Flag flag, @NonNull FlagContextInterface context) {
         int verifiedCondition = 0;
         List<Condition> conditionList = flag.getConditions();
         if (null != conditionList) {

@@ -20,7 +20,7 @@ public class UnanimousStrategy implements Strategy {
      * @return true if a majority of condition are valid, false otherwise
      */
     @Override
-    public Flag.FlagResultStatus isFlagActivated(Flag flag, @NonNull FlagContextInterface context) {
+    public Flag.FlagResultStatus getFlagStatus(Flag flag, @NonNull FlagContextInterface context) {
         List<Condition> conditionList = flag.getConditions();
         if (null != conditionList && conditionList.size() > 0) {
             for (Condition condition : conditionList) {
