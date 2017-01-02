@@ -94,10 +94,7 @@ public class Flaggr {
             flagsLoader.load(configUrl, new FlagsCallback() {
                 @Override
                 public void onLoadFlags(String jsonResponse, List<Flag> results) {
-                    if (jsonResponse == null || jsonResponse.isEmpty() || results == null || results.isEmpty())
-                        return;
-                    flags = results;
-                    preferences.edit().putString(FLAGS_PREF_KEY, jsonResponse).apply();
+                    parseFlagJsonResults(jsonResponse, results);
                 }
 
                 @Override
@@ -108,6 +105,14 @@ public class Flaggr {
         } catch (Exception ex) {
             Log.e(TAG, "Exception when loading config", ex);
         }
+    }
+
+    @VisibleForTesting
+    public void parseFlagJsonResults(String jsonResponse, List<Flag> results) {
+        if (jsonResponse == null || jsonResponse.isEmpty() || results == null || results.isEmpty())
+            return;
+        flags = results;
+        preferences.edit().putString(FLAGS_PREF_KEY, jsonResponse).apply();
     }
 
     private void loadLocalFlags(final String defaultFlagsFileName) {
