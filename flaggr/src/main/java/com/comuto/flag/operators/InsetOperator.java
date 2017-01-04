@@ -2,6 +2,7 @@ package com.comuto.flag.operators;
 
 import android.support.annotation.Nullable;
 
+import com.comuto.flag.model.Flag;
 import java.util.List;
 
 /**
@@ -22,13 +23,13 @@ public class InsetOperator<T> extends Operator<T>{
      * @return true if the value is in the values list, false otherwise
      */
     @Override
-    public boolean appliesTo(@Nullable T value) {
+    public Flag.FlagResultStatus appliesTo(@Nullable T value) {
         if (null != values) {
             for (T v : values) {
                 if (v.equals(value))
-                    return true;
+                    return Flag.FlagResultStatus.ENABLED;
             }
         }
-        return false;
+        return Flag.FlagResultStatus.DISABLED;
     }
 }

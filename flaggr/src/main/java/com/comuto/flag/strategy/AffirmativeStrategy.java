@@ -21,16 +21,16 @@ public class AffirmativeStrategy implements Strategy {
      * @return true if one condition is valid, false otherwise
      */
     @Override
-    public boolean isFlagActivated(Flag flag, @NonNull FlagContextInterface context) {
+    public Flag.FlagResultStatus getFlagStatus(Flag flag, @NonNull FlagContextInterface context) {
         List<Condition> conditionList = flag.getConditions();
         if (null != conditionList) {
             for (Condition condition : conditionList) {
                 if (null != condition && null != condition.getOperator()
-                    && condition.getOperator().appliesTo(context.getValue(condition.getKey()))) {
-                    return true;
+                    && condition.getOperator().appliesTo(context.getValue(condition.getKey())) == Flag.FlagResultStatus.ENABLED) {
+                    return Flag.FlagResultStatus.ENABLED;
                 }
             }
         }
-        return false;
+        return Flag.FlagResultStatus.DISABLED;
     }
 }

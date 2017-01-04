@@ -18,6 +18,18 @@ import java.util.List;
  */
 public class Flag {
 
+    /***
+     * Flag result status
+     * ENABLED : The flag is enabled
+     * DISABLED :  The flag is disabled
+     * UNKNOWN : If the flag is unkown or an error happen
+     */
+    public enum FlagResultStatus {
+        ENABLED,
+        DISABLED,
+        UNKNOWN
+    }
+
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
         ALWAYS_ACTIVE, // The Toggle is always activated

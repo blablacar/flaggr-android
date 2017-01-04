@@ -14,21 +14,21 @@ public class FlaggrManager {
 
     private static Strategy strategy;
 
-    public static boolean isActivated(Flag flag, FlagContextInterface context, boolean defaultValue) {
+    public static Flag.FlagResultStatus getFlagStatus(Flag flag, FlagContextInterface context, boolean defaultValue) {
         switch (flag.getStatus()) {
             case Flag.ALWAYS_ACTIVE:
-                return true;
+                return Flag.FlagResultStatus.ENABLED;
             case Flag.INACTIVE:
-                return false;
+                return Flag.FlagResultStatus.DISABLED;
             case Flag.CONDITIONALLY_ACTIVE:
                 return checkConditions(flag, context);
         }
-        return defaultValue;
+        return Flag.FlagResultStatus.UNKNOWN;
     }
 
 
-    public static boolean isActivated(Flag flag, FlagContextInterface context) {
-       return isActivated(flag, context, false);
+    public static Flag.FlagResultStatus getFlagStatus(Flag flag, FlagContextInterface context) {
+       return getFlagStatus(flag, context, false);
     }
 
     /**
@@ -36,7 +36,7 @@ public class FlaggrManager {
      * Check if the flag is activated
      * Added to the cache
      */
-    private static boolean checkConditions(Flag flag, FlagContextInterface context) {
+    private static Flag.FlagResultStatus checkConditions(Flag flag, FlagContextInterface context) {
         switch (flag.getStrategy()) {
             case Flag.UNANIMOUS:
                 strategy = new UnanimousStrategy();
@@ -48,7 +48,7 @@ public class FlaggrManager {
                 strategy = new AffirmativeStrategy();
                 break;
         }
-        return strategy.isFlagActivated(flag, context);
+        return strategy.getFlagStatus(flag, context);
     }
 
 }

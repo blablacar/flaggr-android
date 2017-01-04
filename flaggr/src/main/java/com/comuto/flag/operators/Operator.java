@@ -1,6 +1,7 @@
 package com.comuto.flag.operators;
 
 import android.support.annotation.Nullable;
+import com.comuto.flag.model.Flag;
 
 /**
  * An abstract operator
@@ -24,5 +25,5 @@ public abstract class Operator<T> {
      * @param value the value to validate
      * @return true if the value is validated, false otherwise
      */
-    public abstract boolean appliesTo(@Nullable T value);
+    public abstract Flag.FlagResultStatus appliesTo(@Nullable T value);
 }
