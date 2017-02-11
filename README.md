@@ -40,7 +40,7 @@ MyFlagContext.FlagContextBuilder builder = new MyFlagContext.FlagContextBuilder(
         .setUserId(myUserId);
 Flaggr.with(this).isActive(getString(R.string.my_flag), builder.build());
 ```
-Your context can contain any type of data, but IT MUST IMPLEMENTS THE INTERFACE FlagContextInterface
+Your context can contain any type of data, but IT MUST IMPLEMENT THE INTERFACE FlagContextInterface
 
 You can also specify a default value if the flag is not found or an error happens when processing
 ```java
