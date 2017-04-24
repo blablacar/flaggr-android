@@ -1,7 +1,6 @@
 package com.comuto.flag;
 
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import android.util.Log;
 import com.comuto.flag.model.Flag;
 import com.google.gson.Gson;
@@ -17,6 +16,7 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Downloads flags from server.
@@ -35,7 +35,7 @@ public final class FlagsLoader {
     }
 
     void load(String url, @NonNull final FlagsCallback flagsCallback) throws Exception {
-        if (TextUtils.isEmpty(url)) {
+        if (StringUtils.isEmpty(url)) {
             throw new IllegalStateException("Please pass a valid url");
         }
 
