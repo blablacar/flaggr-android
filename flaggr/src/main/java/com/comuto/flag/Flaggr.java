@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.VisibleForTesting;
-import android.text.TextUtils;
 import android.util.Log;
 import com.comuto.flag.model.Flag;
 import com.comuto.flag.model.FlagContextInterface;
@@ -19,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Feature flags main entry point.
@@ -172,7 +172,7 @@ public class Flaggr {
      * @return true if the flag is activated, false otherwise
      */
     public Flag.FlagResultStatus isActive(@NonNull String flagName, FlagContextInterface flagContext, boolean defaultValue) {
-        if (TextUtils.isEmpty(flagName)) {
+        if (StringUtils.isEmpty(flagName)) {
             return Flag.FlagResultStatus.UNKNOWN;
         }
         /** Check if the flag is in the cache list, return the result */

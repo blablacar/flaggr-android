@@ -1,8 +1,8 @@
 package com.comuto.flag.operators;
 
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import com.comuto.flag.model.Flag;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * An operator that applied to toggle to
@@ -22,7 +22,7 @@ public class PercentageOperator extends Operator<String> {
 
     @Override
     public Flag.FlagResultStatus appliesTo(@Nullable String value) throws NumberFormatException {
-        if (TextUtils.isEmpty(value)) {
+        if (StringUtils.isEmpty(value)) {
             return Flag.FlagResultStatus.DISABLED;
         }
         final int val = Integer.parseInt(value);

@@ -33,6 +33,7 @@ dependencies {
     compile "com.android.support:support-annotations:${SUPPORT_VERSION}"
     compile "com.google.dagger:dagger:${DAGGER_VERSION}"
     compile "org.glassfish:javax.annotation:${GLASSFISH_ANNOTATION_VERSION}"
+    compile "org.apache.commons:commons-lang3:${project.COMMONS_LANG_VERSION}"
     apt "com.google.dagger:dagger-compiler:${DAGGER_VERSION}"
 
     testCompile "junit:junit:${JUNIT_VERSION}"
