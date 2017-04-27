@@ -75,19 +75,23 @@ public class Flaggr {
      * @param configUrl url of json config.
      */
     public void loadConfig(String configUrl, String defaultFlagsFileName) {
+        loadConfig(configUrl, defaultFlagsFileName, null);
+    }
+
+    public void loadConfig(String configUrl, String defaultFlagsFileName, @Nullable final FlagsResultCallback callback){
         this.configUrl = configUrl;
         this.defaultFlagsFileName = defaultFlagsFileName;
-        downloadConfig(configUrl, defaultFlagsFileName);
+        downloadConfig(configUrl, defaultFlagsFileName, callback);
     }
 
     /**
      * Reload flags for json config.
      */
-    public void reloadConfig() {
-        downloadConfig(this.configUrl, this.defaultFlagsFileName);
+    public void reloadConfig(@Nullable final FlagsResultCallback callback) {
+        downloadConfig(this.configUrl, this.defaultFlagsFileName, callback);
     }
 
-    private void downloadConfig(String configUrl, final String defaultFlagsFileName) {
+    private void downloadConfig(String configUrl, final String defaultFlagsFileName, @Nullable final FlagsResultCallback callback) {
         flagCaches.clear();
         try {
             loadLocalFlags(defaultFlagsFileName);
@@ -95,11 +99,19 @@ public class Flaggr {
                 @Override
                 public void onLoadFlags(String jsonResponse, List<Flag> results) {
                     parseFlagJsonResults(jsonResponse, results);
+                    if (callback != null) {
+                        callback.onFlagLoaded(flags);
+                        callback.onComplete();
+                    }
                 }
 
                 @Override
-                public void onError() {
+                public void onError(Exception ex) {
                     loadLocalFlags(defaultFlagsFileName);
+                    if (callback != null) {
+                        callback.onError(ex);
+                        callback.onComplete();
+                    }
                 }
             });
         } catch (Exception ex) {
@@ -108,7 +120,7 @@ public class Flaggr {
     }
 
     @VisibleForTesting
-    public void parseFlagJsonResults(String jsonResponse, List<Flag> results) {
+    void parseFlagJsonResults(String jsonResponse, List<Flag> results) {
         if (jsonResponse == null || jsonResponse.isEmpty() || results == null || results.isEmpty())
             return;
         flags = results;
@@ -124,8 +136,8 @@ public class Flaggr {
     }
 
     @Nullable
-    public String readJSONFromAsset(String fileName) {
-        String json = null;
+    private String readJSONFromAsset(String fileName) {
+        String json;
         try {
             InputStream is = context.getAssets().open(fileName);
             int size = is.available();

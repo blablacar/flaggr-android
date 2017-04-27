@@ -29,7 +29,7 @@ public final class FlagsLoader {
     private Gson gson;
 
     @Inject
-    public FlagsLoader(Lazy<OkHttpClient> lazyClient, Gson gson) {
+    FlagsLoader(Lazy<OkHttpClient> lazyClient, Gson gson) {
         this.lazyClient = lazyClient;
         this.gson = gson;
     }
@@ -47,8 +47,7 @@ public final class FlagsLoader {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.e(TAG, "onFailure() called with: e = [" + e + "]");
-                e.printStackTrace();
-                flagsCallback.onError();
+                flagsCallback.onError(e);
             }
 
             @Override

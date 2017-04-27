@@ -19,5 +19,5 @@ public interface FlagsCallback {
      * Called if there is an error
      * The file id not downloaded
      */
-    void onError();
+    void onError(Exception ex);
 }
