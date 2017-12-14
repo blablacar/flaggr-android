@@ -22,4 +22,10 @@ public class PercentageOperatorTest {
         assertEquals(Flag.FlagResultStatus.ENABLED, percentageOperator.appliesTo("12"));
         assertEquals(Flag.FlagResultStatus.DISABLED, percentageOperator.appliesTo("20"));
     }
+
+    @Test
+    public void testPercentageWithoutRegistrationValue() throws Exception {
+        PercentageOperator percentageOperator = new PercentageOperator("modulo", 10, 5);
+        assertEquals(Flag.FlagResultStatus.DISABLED, percentageOperator.appliesTo("0"));
+    }
 }
