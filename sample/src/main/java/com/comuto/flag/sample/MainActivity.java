@@ -15,6 +15,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Flaggr flaggr = Flaggr.with(this);
-        flaggr.loadConfig("MY_URL", "MY_LOCAL_URI");
+        flaggr.init("MY_URL", "MY_LOCAL_URI", null);
     }
 }

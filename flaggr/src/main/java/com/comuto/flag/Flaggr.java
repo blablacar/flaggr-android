@@ -69,16 +69,21 @@ public class Flaggr {
         flaggrComponent.inject(this);
     }
 
+    public void init(String configUrl, String defaultFlagsFileName, @Nullable final FlagsResultCallback callback) {
+        loadLocalFlags(defaultFlagsFileName);
+        loadConfig(configUrl, defaultFlagsFileName, callback);
+    }
+
     /**
      * Start a request to download config url.
      *
      * @param configUrl url of json config.
      */
-    public void loadConfig(String configUrl, String defaultFlagsFileName) {
+    private void loadConfig(String configUrl, String defaultFlagsFileName) {
         loadConfig(configUrl, defaultFlagsFileName, null);
     }
 
-    public void loadConfig(String configUrl, String defaultFlagsFileName, @Nullable final FlagsResultCallback callback){
+    private void loadConfig(String configUrl, String defaultFlagsFileName, @Nullable final FlagsResultCallback callback){
         this.configUrl = configUrl;
         this.defaultFlagsFileName = defaultFlagsFileName;
         downloadConfig(configUrl, defaultFlagsFileName, callback);
@@ -91,10 +96,8 @@ public class Flaggr {
         downloadConfig(this.configUrl, this.defaultFlagsFileName, callback);
     }
 
-    private void downloadConfig(String configUrl, final String defaultFlagsFileName, @Nullable final FlagsResultCallback callback) {
-        flagCaches.clear();
+    synchronized private void downloadConfig(String configUrl, final String defaultFlagsFileName, @Nullable final FlagsResultCallback callback) {
         try {
-            loadLocalFlags(defaultFlagsFileName);
             flagsLoader.load(configUrl, new FlagsCallback() {
                 @Override
                 public void onLoadFlags(String jsonResponse, List<Flag> results) {
@@ -115,6 +118,7 @@ public class Flaggr {
                 }
             });
         } catch (Exception ex) {
+            loadLocalFlags(defaultFlagsFileName);
             Log.e(TAG, "Exception when loading config", ex);
         }
     }
@@ -123,16 +127,22 @@ public class Flaggr {
     void parseFlagJsonResults(String jsonResponse, List<Flag> results) {
         if (jsonResponse == null || jsonResponse.isEmpty() || results == null || results.isEmpty())
             return;
+        flagCaches.clear();
         flags = results;
-        preferences.edit().putString(FLAGS_PREF_KEY, jsonResponse).apply();
+        preferences.edit().putString(FLAGS_PREF_KEY, jsonResponse).commit();
     }
 
     private void loadLocalFlags(final String defaultFlagsFileName) {
-        String jsonResponse = readJSONFromAsset(defaultFlagsFileName);
-
+        flagCaches.clear();
+        String flagsInPreference = preferences.getString(FLAGS_PREF_KEY, "");
         Type listType = new TypeToken<List<Flag>>() {}.getType();
-        flags = gson.fromJson(jsonResponse, listType);
-        preferences.edit().putString(FLAGS_PREF_KEY, jsonResponse).apply();
+        if (!flagsInPreference.isEmpty()) {
+            flags = gson.fromJson(flagsInPreference, listType);
+        } else {
+            String jsonResponse = readJSONFromAsset(defaultFlagsFileName);
+            flags = gson.fromJson(jsonResponse, listType);
+            preferences.edit().putString(FLAGS_PREF_KEY, jsonResponse).commit();
+        }
     }
 
     @Nullable
