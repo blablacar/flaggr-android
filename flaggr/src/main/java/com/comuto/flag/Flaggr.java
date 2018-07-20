@@ -118,7 +118,6 @@ public class Flaggr {
                 }
             });
         } catch (Exception ex) {
-            loadLocalFlags(defaultFlagsFileName);
             Log.e(TAG, "Exception when loading config", ex);
         }
     }
